@@ -4,16 +4,19 @@ import {FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {User} from '../model/User';
 import {FirebaseService} from './FirebaseService';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Channel} from '../model/Channel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   currentUser: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  users: User[] = [];
+  users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  usersDb;
 
-  constructor(private router: Router, private firebaseService: FirebaseService) {
-    this.users.push({id: 1, email: 'test@gmail.com', password: '12345', firstname: 'Alexandre', lastname: 'Gublin', image: ''});
+  constructor(private router: Router, private db: AngularFirestore) {
+    this.getUsers();
   }
 
   public isLogin() {
@@ -21,22 +24,29 @@ export class LoginService {
   }
 
   public authentication(formGroup: FormGroup) {
-    const user = {id: 1, email: formGroup.get('email').value, password: formGroup.get('password').value, firstname: 'Alexandre', lastname: 'Gublin', image: 'https://randomuser.me/api/portraits/med/men/75.jpg'};
-
-    for (let i = 0; i < this.users.length; i++) {
-      console.log(user.email + ' | ' + (this.users[i].email + ' && ' + user.password + ' | ' + this.users[i].password));
-      if (this.users[i].email === user.email && this.users[i].password === user.password) {
-        console.log('connected');
-        this.currentUser.next(user);
-        this.router.navigate(['']);
-      }
+    const email = formGroup.get('email').value;
+    const password = formGroup.get('password').value;
+    if (this.users.getValue().find(u => u.email === email && u.password === password)) {
+      this.currentUser.next(this.users.getValue().find(u => u.email === email && u.password === password));
+      this.router.navigate(['']);
     }
   }
 
   public disconnectUser() {
     this.currentUser.next(null);
     console.log('disconnect');
-    console.log(this.currentUser.getValue());
     this.router.navigate(['/login']);
+  }
+
+  public getUsers(): User[] {
+    this.usersDb = this.db.collection('users').snapshotChanges().subscribe(docs => {
+      const list = docs.map(a => {
+        const data = a.payload.doc.data() as User;
+        const id = a.payload.doc.id;
+        return {id, ...data};
+      });
+      this.users.next(list);
+    });
+    return this.users.getValue();
   }
 }

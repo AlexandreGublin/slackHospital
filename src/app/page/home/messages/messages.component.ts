@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {Message} from '../../../model/Message';
 import {MessageService} from '../../../service/MessageService';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LoginService} from '../../../service/LoginService';
 
 @Component({
   selector: 'app-messages',

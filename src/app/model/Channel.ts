@@ -1,5 +1,5 @@
 export interface Channel {
-  id: number;
+  id: string;
   userId: number;
   usersId: number[];
   name: string;

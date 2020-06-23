@@ -1,9 +1,9 @@
 import {User} from './User';
 
 export interface Workspace {
-  id: number;
+  id: string;
   name: string;
-  icon: string;
+  icon?: string;
   ownerId: number;
   usersId: number[];
   createdAt: number;

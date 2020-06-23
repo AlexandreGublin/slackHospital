@@ -13,9 +13,9 @@ export class ChannelPeoplesComponent {
   peoples: User[];
   constructor(private peopleService: PeopleService, private channelService: ChannelService) {
     channelService.currentChannel.subscribe(channel => {
-      if (channel){
-        this.peoples = peopleService.getPeoples();
-      }
+      // if (channel){
+      //   this.peoples = peopleService.getPeoples();
+      // }
     });
   }
 }

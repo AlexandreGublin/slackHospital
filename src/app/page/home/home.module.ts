@@ -21,6 +21,7 @@ import {SearchWorkspaceComponent} from './work-spaces/search-workspace/search-wo
 import {MenuGridWorkspaceComponent} from './work-spaces/menu-grid-workspace/menu-grid-workspace.component';
 import {MessageOwnerDirective} from '../../directive/message-owner.directive';
 import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -42,11 +43,13 @@ import {CommonModule} from '@angular/common';
     AddWorkspaceComponent,
     SearchWorkspaceComponent,
     MenuGridWorkspaceComponent,
-    MessageOwnerDirective,
+    MessageOwnerDirective
   ],
   imports: [
     RouterModule.forChild(routes),
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 

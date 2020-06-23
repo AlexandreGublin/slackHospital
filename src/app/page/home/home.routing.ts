@@ -3,10 +3,10 @@ import {HomeComponent} from './home.component';
 import {ChannelsComponent} from './channels/channels.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'workspace/1' },
+  { path: '', redirectTo: 'workspace/0' },
   { path: 'workspace/:idWorkspace', component: HomeComponent,
     children: [
-      { path: '', redirectTo: 'channel/'},
+      { path: '', redirectTo: 'channel/0'},
       { path: 'channel/:idChannel', component: ChannelsComponent }
     ]
   }

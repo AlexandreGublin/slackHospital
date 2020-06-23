@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Message} from '../../../../model/Message';
+import {MessageService} from '../../../../service/MessageService';
 
 @Component({
   selector: 'app-message',
@@ -10,11 +11,14 @@ export class MessageComponent implements OnInit {
   @Input() message: Message = null;
   textMessage: string;
 
-  constructor() { }
+  constructor(private messageService: MessageService) { }
 
   ngOnInit(): void {
-    console.log(this.message.userId);
     this.textMessage = this.message.message.replace(RegExp(':D'), '😀');
   }
 
+  deleteMessage() {
+    console.log('message to delete', this.message);
+    this.messageService.delete(this.message);
+  }
 }

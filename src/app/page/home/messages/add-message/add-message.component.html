@@ -1,1 +1,12 @@
-<p>add-message works!</p>
+<div>
+  <form (ngSubmit)="addNewMessage()" [formGroup]="newMessageForm">
+    <div class="form-group">
+      <textarea
+        id="message"
+        formControlName="message"
+        class="form-control">
+      </textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+  </form>
+</div>

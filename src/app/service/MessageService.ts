@@ -1,40 +1,62 @@
 import {Injectable} from '@angular/core';
 import {Message} from '../model/Message';
-import {FirebaseService} from './FirebaseService';
-import {LoginService} from './LoginService';
 import {BehaviorSubject} from 'rxjs';
 import {ChannelService} from './ChannelService';
+import {Channel} from '../model/Channel';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {WorkSpaceService} from './WorkSpaceService';
+import {Local} from 'protractor/built/driverProviders';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   messages: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
-  messagesMock: Message[] = [
-    {id: 1, channelId: 1, message: 'first message :D', createdAt: 1587555589, fileList: null, notifiesUserId: null, userId: 1},
-    {id: 2, channelId: 1, message: 'Autre message', createdAt: 1587555590, fileList: null, notifiesUserId: null, userId: 1},
-    {id: 3, channelId: 1, message: 'Hello world', createdAt: 1587555590, fileList: null, notifiesUserId: null, userId: 1},
-    {id: 4, channelId: 2, message: 'Test message', createdAt: 1587555590, fileList: null, notifiesUserId: null, userId: 1},
-    {id: 5, channelId: 2, message: 'Test message2', createdAt: 1587555590, fileList: null, notifiesUserId: null, userId: 1},
-    {id: 6, channelId: 2, message: 'Test message3', createdAt: 1587555590, fileList: null, notifiesUserId: null, userId: 1}
-  ];
+  messagesDb = undefined;
 
-  constructor(private firebaseService: FirebaseService, private channelService: ChannelService, private loginService: LoginService) {
+  constructor(private db: AngularFirestore,
+              private channelService: ChannelService,
+              private workSpaceService: WorkSpaceService) {
     this.channelService.currentChannel.subscribe(channel => {
-      this.loadMessages();
+      if (this.messagesDb !== undefined) {
+        this.messagesDb.unsubscribe();
+      }
+      this.loadMessages(channel);
     });
   }
 
-  loadMessages(){
-    if (this.channelService.currentChannel.getValue()){
-      this.messages.next(this.messagesMock.filter(c => c.channelId === this.channelService.currentChannel.getValue().id));
-    }else{
+  loadMessages(channel: Channel){
+    if (!channel){
       this.messages.next(null);
+    }else{
+      this.messagesDb = this.db.collection(`workspaces/${this.workSpaceService.currentWorkspace.getValue().id}/channels/${channel.id}/messages`, ref => ref.orderBy('createdAt'))
+        .snapshotChanges()
+        .subscribe(docs => {
+          const list = docs.map(a => {
+            const data = a.payload.doc.data() as Message;
+            const id = a.payload.doc.id;
+            return {id, ...data};
+          });
+          this.messages.next(list);
+        });
     }
   }
 
   getMessage(messageId: number, channelId: number){}
-  push(channelId: number, message: Message){}
+  push(message: Message){
+    this.db
+      .collection(`workspaces/${this.workSpaceService.currentWorkspace.getValue().id}/channels/${this.channelService.currentChannel.getValue().id}/messages`)
+      .add(message).catch(error => {
+      console.log('Error db push message', error);
+    });
+  }
   update(message: Message){}
-  delete(message: Message){}
+  delete(message: Message){
+    this.db
+      .collection(`workspaces/${this.workSpaceService.currentWorkspace.getValue().id}/channels/${this.channelService.currentChannel.getValue().id}/messages`)
+      .doc(message.id)
+      .delete().catch(error => {
+        console.log('Error db delete message', error);
+    });
+  }
 }

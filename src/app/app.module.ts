@@ -10,12 +10,13 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 const config = {
-  apiKey: '<your-key>',
-  authDomain: '<your-project-authdomain>',
-  databaseURL: '<your-database-URL>',
-  projectId: '<your-project-id>',
-  storageBucket: '<your-storage-bucket>',
-  messagingSenderId: '<your-messaging-sender-id>'
+  apiKey: 'AIzaSyCxrfWWRkKK0nAWqwVYgSIL75PH8Gui0v4',
+  authDomain: 'formation-angular-e9b2f.firebaseapp.com',
+  databaseURL: 'https://formation-angular-e9b2f.firebaseio.com',
+  projectId: 'formation-angular-e9b2f',
+  storageBucket: 'formation-angular-e9b2f.appspot.com',
+  messagingSenderId: '550404399326',
+  appId: '1:550404399326:web:c1c0a803ba250c87a5224f'
 };
 
 @NgModule({

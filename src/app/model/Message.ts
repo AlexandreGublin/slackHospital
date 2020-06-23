@@ -1,9 +1,6 @@
 export interface Message {
-  id: number;
+  id?: string;
   message: string;
-  userId: number;
-  createdAt: number;
-  fileList: string[];
-  channelId: number;
-  notifiesUserId: string;
+  userId: string;
+  createdAt: Date;
 }

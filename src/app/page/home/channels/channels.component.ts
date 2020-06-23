@@ -14,10 +14,8 @@ export class ChannelsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe( (params: ParamMap) => {
-      const idChannel = +params.get('idChannel');
-      if (idChannel) {
-        const channel = this.channelService.getChannel(+params.get('idChannel'));
-        this.channelService.currentChannel.next(channel);
+      if (!params.get('idChannel') || params.get('idChannel') !== '0') {
+        this.channelService.currentChannel.next(this.channelService.getChannel(params.get('idChannel')));
       }
     });
 
