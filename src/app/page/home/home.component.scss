@@ -1,0 +1,52 @@
+@import '../../../assets/style/main';
+
+button {
+  margin: 20px !important;
+  padding: 20px !important;
+}
+
+app-header {
+}
+
+app-work-spaces {
+}
+
+app-channels {
+
+}
+
+app-messages {
+
+}
+
+app-channel-peoples {
+
+}
+
+
+.space {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#headerBody {
+  /*border-bottom: 1px solid #E2E4EB;*/
+}
+#workspaceBody {
+  border: 1px solid $borderColor;
+  height: 100% !important;
+}
+#channelBody {
+  background-color: $grey;
+  border: 1px solid #E2E4EB;
+  height: 100% !important;
+}
+#messageBody {
+  border: 1px solid $borderColor;
+  height: 100% !important;
+}
+#channelPeopleBody {
+  border: 1px solid $borderColor;
+  height: 100% !important;
+}
+

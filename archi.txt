@@ -1,0 +1,45 @@
+15h15
+
+structure : 
+
+service 
+	firebaseService
+	loginService
+	messageService
+	workspaceService
+	channelService
+	userService
+
+entities
+	...
+
+
+
+Pages :
+
+
+component login
+
+
+component home
+	component header 
+		component userHeader
+		component searchHeader
+		component titleHeader
+		component filterHeader
+
+	component workspaces (left bar) 
+		component menuGrid
+		for component workSpace
+		component addWorkSpace ?
+		component search ?
+	
+	component channels
+		for component channel
+
+	component channelPeoples (right bar)
+		for component people
+
+	component messages
+		for component message
+		component addMessage
